@@ -17,9 +17,14 @@ jobs:
       run: |
         pip install requests psutil pyinstaller
 
+    - name: Clean Previous Builds
+      run: |
+        if (Test-Path dist) { Remove-Item -Recurse -Force dist }
+        if (Test-Path build) { Remove-Item -Recurse -Force build }
+
     - name: Compile to EXE with Icon
       run: |
-        pyinstaller --noconsole --onefile --icon=icon.ico app.py
+        pyinstaller --noconsole --onefile --clean --icon=icon.ico app.py
 
     - name: Upload EXE Artifact
       uses: actions/upload-artifact@v4
