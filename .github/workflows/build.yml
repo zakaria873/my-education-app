@@ -1,0 +1,28 @@
+name: Build EXE Online
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install Tools
+      run: |
+        pip install requests psutil pyinstaller
+
+    - name: Compile to EXE with Icon
+      run: |
+        pyinstaller --noconsole --onefile --icon=icon.ico app.py
+
+    - name: Upload EXE Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: EducationalApp
+        path: dist/app.exe
